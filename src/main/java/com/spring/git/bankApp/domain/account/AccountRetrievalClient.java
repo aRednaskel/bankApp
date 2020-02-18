@@ -2,6 +2,8 @@ package com.spring.git.bankApp.domain.account;
 
 import com.spring.git.bankApp.domain.model.account.Account;
 
+import java.util.List;
+
 public interface AccountRetrievalClient {
 
 
@@ -11,5 +13,6 @@ public interface AccountRetrievalClient {
 
     Account findByAccNumberOrExtAccount(String accountNumber);
 
+    List<Account> findAllAccounts();
 
 }

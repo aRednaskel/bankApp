@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -37,5 +38,10 @@ class AccountRetrievalPostgresClient implements AccountRetrievalClient {
                 .build();
         return accountRepository.findByAccountNumber(accountNumber)
                 .orElse(externalAccount);
+    }
+
+    @Override
+    public List<Account> findAllAccounts() {
+        return accountRepository.findAll();
     }
 }

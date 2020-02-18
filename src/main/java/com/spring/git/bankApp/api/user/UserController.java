@@ -54,16 +54,16 @@ public class UserController {
         userFacade.createUser(userDto.getLogin(), userDto.getGender(), userDto.getPassword());
     }
 
-    @PostMapping(path = "/userpremium")
-    public void createUserAndPremiumAccount(@Valid @RequestBody UserDto userDto) {
-        log.info("User and premium Account creation {}", userDto.getLogin());
-        userFacade.createUserAndPremiumAccount(userDto.getLogin(), userDto.getGender(), userDto.getPassword());
+    @DeleteMapping("/deleteUser/{userId}")
+    public void deleteUserWithId(@PathVariable long userId) {
+        log.info("Deleting user with Id ", userId);
+        userFacade.deleteUserById(userId);
     }
 
-    @PostMapping(path = "/userstandard")
-    public void createUserAndStandardAccount(@Valid  @RequestBody UserDto userDto) {
-        log.info("User and standard Account creation {}", userDto.getLogin());
-        userFacade.createUserAndStandardAccount(userDto.getLogin(), userDto.getGender(), userDto.getPassword());
+    @DeleteMapping("/deleteUser")
+    public void deleteUserWithUsername(@RequestParam String username) {
+        log.info("Deleting user with username ", username);
+        userFacade.deleteByUsername(username);
     }
 
     private static class UserMapper {

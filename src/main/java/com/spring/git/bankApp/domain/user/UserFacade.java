@@ -16,17 +16,10 @@ public class UserFacade implements UserDetailsService {
     private final UserCreator userCreator;
     private final UserRetrievalClient userRetrievalClient;
     private final UserUpdate userUpdate;
+    private final UserDeleter userDeleter;
 
     public void createUser(String login, Gender gender, String password) {
         userCreator.create(login, gender, password);
-    }
-
-    public void createUserAndPremiumAccount(String login, Gender gender, String password) {
-        userCreator.createUserAndPremiumAccount(login, gender, password);
-    }
-
-    public void createUserAndStandardAccount(String login, Gender gender, String password) {
-        userCreator.createUserAndStandardAccount(login, gender, password);
     }
 
     public void updatePassword(String login, String oldPassword, String newPassword) {
@@ -34,7 +27,7 @@ public class UserFacade implements UserDetailsService {
     }
 
     public void updateLogin(String oldLogin, String newLogin, String password) {
-        userUpdate.updateLogin(oldLogin,newLogin, password);
+        userUpdate.updateLogin(oldLogin, newLogin, password);
     }
 
     @Override
@@ -44,5 +37,13 @@ public class UserFacade implements UserDetailsService {
 
     public List<User> findAllUsers() {
         return userRetrievalClient.findAll();
+    }
+
+    public void deleteUserById(long userId) {
+        userDeleter.deleteIdUser(userId);
+    }
+
+    public void deleteByUsername(String username) {
+        userDeleter.deleteUserWIthUsername(username);
     }
 }

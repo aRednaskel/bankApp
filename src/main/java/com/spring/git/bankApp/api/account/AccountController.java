@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -25,7 +27,6 @@ public class AccountController {
         log.info("Account creation for userId {}", userId);
         accountFacade.createPremiumToUser(userId);
     }
-
     @PostMapping("/standard/users/{userId}")
     public void createStandardAccount(@PathVariable @Min(1) Long userId) {
         log.info("Account creation for userId {}", userId);
@@ -37,6 +38,22 @@ public class AccountController {
         AccountDto accountDto = AccountMapper.mapToDto(accountFacade.findAccountByAccountNumber(accountNumber));
         return ResponseEntity.ok(accountDto);
     }
+    @GetMapping(path = "/all")
+    public Iterable<AccountDto> findAllusers() {
+        return AccountMapper.mapIterableUsersToDto(accountFacade.findAllAccounts());
+    }
+
+    @DeleteMapping("/deleteAccount/{accountId}")
+    public void deleteUserWithId(@PathVariable long accountId) {
+        log.info("Deleting user with Id ", accountId);
+        accountFacade.deleteAccountWithId(accountId);
+    }
+
+    @DeleteMapping("/deleteUser")
+    public void deleteUserWithUsername(@RequestParam String accountNumber) {
+        log.info("Deleting user with accountNumber ", accountNumber);
+        accountFacade.deleteAccountWithAccountNumber(accountNumber);
+    }
 
     private static class AccountMapper {
         static AccountDto mapToDto(Account account) {
@@ -44,6 +61,11 @@ public class AccountController {
                     .accountNumber(account.getAccountNumber())
                     .balance(account.getBalance())
                     .build();
+        }
+
+        static Iterable<AccountDto> mapIterableUsersToDto(List<Account> accounts) {
+            List<AccountDto> dtoAccounts = accounts.stream().map(account -> mapToDto(account)).collect(Collectors.toList());
+            return dtoAccounts;
         }
     }
 
